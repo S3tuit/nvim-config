@@ -1,0 +1,7 @@
+*.swp
+*.swo
+*.swn
+Session.vim
+tags
+pack/*/start/*
+pack/*/opt/*
