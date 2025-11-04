@@ -1,5 +1,5 @@
 require("s3tuit.remap")
-print("hello form s3tuit")
+require("s3tuit.set")
 
 local vim = vim
 local Plug = vim.fn['plug#']
@@ -35,6 +35,7 @@ Plug('tpope/vim-fugitive')
 
 -- LSP
 vim.lsp.enable('luals')
+vim.lsp.enable('cls')
 
 vim.call('plug#end')
 
