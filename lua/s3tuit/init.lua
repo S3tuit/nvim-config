@@ -1,5 +1,6 @@
 require("s3tuit.remap")
 require("s3tuit.set")
+require("s3tuit.replall")
 
 local vim = vim
 local Plug = vim.fn['plug#']
