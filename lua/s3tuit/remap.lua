@@ -1,6 +1,10 @@
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
+-- in visual mode, 'x' will delete the text and send it into black hole
+-- register, i.e. don't yank it
+vim.keymap.set("x", "x", '"_d', { noremap = true, silent = true })
+
 local map = vim.keymap.set
 local opts = { noremap = true, silent = true }
 
