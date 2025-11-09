@@ -38,6 +38,9 @@ Plug('tpope/vim-fugitive')
 vim.lsp.enable('luals')
 vim.lsp.enable('cls')
 
+-- for debugging
+Plug('mfussenegger/nvim-dap')
+
 vim.call('plug#end')
 
 -- Color schemes should be loaded after plug#end().
@@ -79,3 +82,39 @@ vim.keymap.set("i", "<Tab>", function()
 	end
 end, { expr = true, noremap = true, silent = true })
 -- AUTOCOMPLETE SETUP (END)
+
+-- SETUP DEBUGGER FOR C/C++
+local dap = require('dap')
+
+dap.adapters.cppdbg = {
+  id = 'cppdbg',
+  type = 'executable',
+  command = vim.fn.expand("~/.local/share/cpptools/extension/debugAdapters/bin/OpenDebugAD7"),
+  options = {
+    detached = false,
+  },
+}
+
+dap.configurations.c = {
+  {
+    name = "Launch C",
+    type = "cppdbg",
+    request = "launch",
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    cwd = '${workspaceFolder}',
+    stopAtEntry = false,
+    setupCommands = {
+      {
+        text = '-enable-pretty-printing',
+        description = 'enable pretty-printing for gdb',
+        ignoreFailures = true,
+      },
+    },
+  },
+}
+
+dap.configurations.cpp = dap.configurations.c
+-- END SETUP C/C++
+
