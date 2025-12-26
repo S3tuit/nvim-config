@@ -37,6 +37,14 @@ Plug('tpope/vim-fugitive')
 -- LSP
 vim.lsp.enable('luals')
 vim.lsp.enable('cls')
+vim.api.nvim_create_user_command('CclsRestart', function()
+  vim.lsp.stop_client(vim.lsp.get_clients({ name = "ccls" }))
+  local name = vim.api.nvim_buf_get_name(0)
+  if name == "" then
+    return
+  end
+  vim.cmd('edit')
+end, {})
 
 -- for debugging
 Plug('mfussenegger/nvim-dap')
@@ -117,4 +125,3 @@ dap.configurations.c = {
 
 dap.configurations.cpp = dap.configurations.c
 -- END SETUP C/C++
-

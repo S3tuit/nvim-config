@@ -17,7 +17,6 @@ vim.keymap.set("n", "<F11>", function() require("dap").step_into() end)
 vim.keymap.set("n", "<F12>", function() require("dap").step_out() end)
 vim.keymap.set("n", "<F6>",  function() require("dap").terminate() end)
 
-
 local map = vim.keymap.set
 local opts = { noremap = true, silent = true }
 
