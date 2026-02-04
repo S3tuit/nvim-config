@@ -36,7 +36,7 @@ Plug('tpope/vim-fugitive')
 
 -- LSP
 vim.lsp.enable('luals')
-vim.lsp.enable('cls')
+vim.lsp.enable('ccls')
 vim.api.nvim_create_user_command('CclsRestart', function()
   vim.lsp.stop_client(vim.lsp.get_clients({ name = "ccls" }))
   local name = vim.api.nvim_buf_get_name(0)
@@ -124,4 +124,46 @@ dap.configurations.c = {
 }
 
 dap.configurations.cpp = dap.configurations.c
+
+-- Format on save for C/C++ using clang-format from PATH.
+-- --assume-filename lets clang-format discover the nearest .clang-format.
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = { "*.c", "*.h", "*.cc", "*.cpp", "*.cxx", "*.hpp", "*.hh", "*.hxx" },
+  callback = function(args)
+    local bufnr = args.buf
+    if vim.bo[bufnr].buftype ~= "" or not vim.bo[bufnr].modifiable then
+      return
+    end
+
+    local filename = vim.api.nvim_buf_get_name(bufnr)
+    if filename == "" then
+      return
+    end
+
+    local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+    local input = table.concat(lines, "\n")
+    if #lines > 0 then
+      input = input .. "\n"
+    end
+
+    local output = vim.fn.system({
+      "/usr/bin/clang-format",
+      "--style=file",
+      "--assume-filename=" .. filename,
+    }, input)
+
+    if vim.v.shell_error ~= 0 then
+      vim.notify("clang-format failed for " .. filename, vim.log.levels.WARN)
+      return
+    end
+
+    local view = vim.fn.winsaveview()
+    local formatted = vim.split(output, "\n", { plain = true })
+    if #formatted > 0 and formatted[#formatted] == "" then
+      table.remove(formatted, #formatted)
+    end
+    vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, formatted)
+    vim.fn.winrestview(view)
+  end,
+})
 -- END SETUP C/C++
