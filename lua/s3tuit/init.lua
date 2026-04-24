@@ -24,6 +24,9 @@ Plug('nvim-treesitter/nvim-treesitter', {
 	':TSUpdate'
 })
 
+-- render markdown inside nvim
+Plug('MeanderingProgrammer/render-markdown.nvim')
+
 -- nav between open files
 Plug('nvim-lua/plenary.nvim')
 Plug('ThePrimeagen/harpoon')
