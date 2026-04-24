@@ -39,9 +39,10 @@ Plug('tpope/vim-fugitive')
 
 -- LSP
 vim.lsp.enable('luals')
-vim.lsp.enable('ccls')
-vim.api.nvim_create_user_command('CclsRestart', function()
-  vim.lsp.stop_client(vim.lsp.get_clients({ name = "ccls" }))
+vim.lsp.enable('clangd')
+vim.api.nvim_create_user_command('ClangdRestart', function()
+  vim.lsp.stop_client(vim.lsp.get_clients({ name = "clangd" }))
+
   local name = vim.api.nvim_buf_get_name(0)
   if name == "" then
     return
