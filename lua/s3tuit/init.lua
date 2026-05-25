@@ -19,7 +19,7 @@ Plug("rose-pine/neovim", { ['as'] = 'rose-pine' })
 
 --
 Plug('nvim-treesitter/nvim-treesitter', {
-	['branch'] = 'master',
+	['branch'] = 'main',
 	['do'] =
 	':TSUpdate'
 })
