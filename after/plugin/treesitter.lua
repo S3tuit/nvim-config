@@ -1,5 +1,5 @@
-local parsers = { "c", "lua", "vim", "vimdoc", "query", "markdown", "sql", "markdown_inline" }
-local filetypes = { "c", "lua", "vim", "vimdoc", "query", "markdown", "sql" }
+local parsers = { "c", "html", "lua", "vim", "vimdoc", "query", "markdown", "sql", "markdown_inline", "yaml" }
+local filetypes = { "c", "html", "lua", "vim", "vimdoc", "query", "markdown", "sql", "yaml" }
 
 local ok, treesitter = pcall(require, "nvim-treesitter")
 if ok and type(treesitter.install) == "function" then
