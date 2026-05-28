@@ -37,6 +37,7 @@ Plug('tpope/vim-fugitive')
 -- LSP
 vim.lsp.enable('luals')
 vim.lsp.enable('clangd')
+vim.lsp.enable('pyright')
 vim.api.nvim_create_user_command('ClangdRestart', function()
   vim.lsp.stop_client(vim.lsp.get_clients({ name = "clangd" }))
 
@@ -46,6 +47,15 @@ vim.api.nvim_create_user_command('ClangdRestart', function()
   end
   vim.cmd('edit')
 end, {})
+
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(args)
+    local bufnr = args.buf
+
+    vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
+    vim.bo[bufnr].tagfunc = 'v:lua.vim.lsp.tagfunc'
+  end,
+})
 
 -- for debugging
 Plug('mfussenegger/nvim-dap')
