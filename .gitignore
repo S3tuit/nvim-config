@@ -7,3 +7,4 @@ pack/*/start/*
 pack/*/opt/*
 .codex
 .nvimlog
+nvim.log

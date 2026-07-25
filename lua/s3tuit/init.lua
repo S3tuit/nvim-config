@@ -178,3 +178,31 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
 })
 -- END SETUP C/C++
+
+vim.api.nvim_create_user_command("Format", function()
+  if vim.bo.filetype ~= "json" then
+    vim.notify(":Format currently supports JSON files only", vim.log.levels.WARN)
+    return
+  end
+
+  local view = vim.fn.winsaveview()
+  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+  local input = table.concat(lines, "\n")
+  if #lines > 0 then
+    input = input .. "\n"
+  end
+
+  local output = vim.fn.system({ "jq", "." }, input)
+
+  if vim.v.shell_error ~= 0 then
+    vim.notify("jq could not format this JSON file", vim.log.levels.ERROR)
+    return
+  end
+
+  local formatted = vim.split(output, "\n", { plain = true })
+  if #formatted > 0 and formatted[#formatted] == "" then
+    table.remove(formatted, #formatted)
+  end
+  vim.api.nvim_buf_set_lines(0, 0, -1, false, formatted)
+  vim.fn.winrestview(view)
+end, { desc = "Format the current JSON buffer" })
