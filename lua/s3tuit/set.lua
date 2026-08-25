@@ -10,7 +10,21 @@ vim.opt.expandtab = true
 
 vim.opt.smartindent = true
 
-vim.opt.wrap = false
+vim.opt.wrap = true
+vim.opt.linebreak = true
+vim.opt.breakindent = true
+vim.opt.textwidth = 0
+
+local wrap_group = vim.api.nvim_create_augroup("WrapByFiletype", { clear = true })
+local function set_wrap_for_filetype(args)
+  local filetype = vim.bo[args.buf].filetype
+  vim.wo.wrap = filetype ~= "python" and filetype ~= "c"
+end
+
+vim.api.nvim_create_autocmd({ "FileType", "BufWinEnter" }, {
+  group = wrap_group,
+  callback = set_wrap_for_filetype,
+})
 
 vim.opt.swapfile = false
 vim.opt.backup = false
@@ -33,5 +47,3 @@ vim.opt.colorcolumn = "80"
 --Clipboard
 --yank to system clipboard
 vim.opt.clipboard = "unnamedplus"
-
-
